@@ -6,7 +6,7 @@ from os import path
 from PIL import Image, ImageFont, ImageDraw
 
 FONT_PATH = path.dirname(path.abspath(__file__)) + '/mplus-2p-heavy.ttf'
-FONT = ImageFont.truetype(FONT_PATH, 24, encoding='unic')
+FONT = ImageFont.truetype(FONT_PATH, 12, encoding='unic')
 IMAGE_FILE = path.dirname(path.abspath(__file__)) + '/image.png'
 
 
@@ -18,12 +18,15 @@ def get_text_length(text):
     return FONT.getsize(text)[0]
 
 
-def create_image(text):
-    image = Image.new(
-        "RGB", (64 + 32 + get_text_length(text) + 64, 32), (0, 0, 0))
+def create_image(artist, title):
+    textSize = max((get_text_length(' ' + artist), get_text_length(' ' + title)))
+    width = 64 + 32 + textSize + 64
+    image = Image.new("RGB", (width, 32), (0, 0, 0))
+
     draw = ImageDraw.Draw(image)
     draw.font = FONT
-    draw.text((64 + 32, 0), text, (255, 255, 255))
+    draw.text((64 + 32, 3), ' ' + artist, (255, 255, 255))
+    draw.text((64 + 32, 15), ' ' + title, (255, 255, 255))
 
     artwork = Image.open('artwork.jpg')
     artwork = artwork.resize((32, 32))
@@ -34,9 +37,9 @@ def create_image(text):
 with open("data.txt", 'r', encoding='utf-8') as f:
     lines = f.readlines()
 
-URL = lines[0]
-ARTIST = lines[1]
-TITLE = lines[2]
+URL = lines[0].strip()
+ARTIST = lines[1].strip()
+TITLE = lines[2].strip()
 
 get_artwork(URL)
-create_image(' ' + ARTIST + '「' + TITLE + '」').save('image.jpg', quality=100)
+create_image(ARTIST, TITLE).save('image.jpg', quality=100)
