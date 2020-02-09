@@ -34,9 +34,9 @@ def create_image(text):
 with open("data.txt", 'r', encoding='utf-8') as f:
     lines = f.readlines()
 
-URL = lines[0]
-ARTIST = lines[1]
-TITLE = lines[2]
+URL = lines[0].strip()
+ARTIST = lines[1].strip()
+TITLE = lines[2].strip()
 
 get_artwork(URL)
 create_image(' ' + ARTIST + '「' + TITLE + '」').save('image.jpg', quality=100)
