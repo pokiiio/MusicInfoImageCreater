@@ -31,9 +31,12 @@ def create_image(text):
     return image
 
 
-URL = sys.argv[1]
-ARTIST = sys.argv[2]
-TITLE = sys.argv[3]
+with open("data.txt", 'r', encoding='utf-8') as f:
+    lines = f.readlines()
+
+URL = lines[0]
+ARTIST = lines[1]
+TITLE = lines[2]
 
 get_artwork(URL)
 create_image(' ' + ARTIST + '「' + TITLE + '」').save('image.jpg', quality=100)
